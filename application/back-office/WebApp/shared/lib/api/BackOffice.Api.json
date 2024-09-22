@@ -5,5 +5,68 @@
     "title": "PlatformPlatform API",
     "version": "v1"
   },
-  "components": {}
+  "paths": {
+    "/api/back-office/test/login/test": {
+      "post": {
+        "tags": [
+          "Test"
+        ],
+        "operationId": "PostApiBackOfficeTestLoginTest",
+        "requestBody": {
+          "x-name": "command",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/StartLoginCommand"
+              }
+            }
+          },
+          "required": true,
+          "x-position": 1
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartLoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "StartLoginResponse": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "loginId": {
+            "type": "string"
+          },
+          "validForSeconds": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "myvalue": {
+            "type": "integer",
+            "format": "int32"
+          }
+        }
+      },
+      "StartLoginCommand": {
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "email": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
 }

@@ -16,7 +16,7 @@ namespace PlatformPlatform.AccountManagement.Authentication.Commands;
 public sealed record StartLoginCommand(string Email) : ICommand, IRequest<Result<StartLoginResponse>>;
 
 [PublicAPI]
-public sealed record StartLoginResponse(string LoginId, int ValidForSeconds);
+public sealed record StartLoginResponse(string LoginId, int ValidForSeconds, bool isTrue);
 
 public sealed class StartLoginValidator : AbstractValidator<StartLoginCommand>
 {
@@ -51,7 +51,7 @@ public sealed class StartLoginCommandHandler(
 
             // Return a fake login process id to the client, so an attacker can't guess if the email is valid or not.
             // Please note that a sophisticated attacker can still guess if the email is valid or not by measuring the time it takes to get a response
-            return new StartLoginResponse(LoginId.NewId(), Login.ValidForSeconds);
+            return new StartLoginResponse(LoginId.NewId(), Login.ValidForSeconds, true);
         }
 
         // TODO: Check if a login process is already started for this user and if it is not expired yet
@@ -73,6 +73,6 @@ public sealed class StartLoginCommandHandler(
             cancellationToken
         );
 
-        return new StartLoginResponse(login.Id, Login.ValidForSeconds);
+        return new StartLoginResponse(login.Id, Login.ValidForSeconds, true);
     }
 }

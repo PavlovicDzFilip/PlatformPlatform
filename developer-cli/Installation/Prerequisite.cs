@@ -12,6 +12,7 @@ public abstract record Prerequisite
     public static readonly Prerequisite Node = new CommandLineToolPrerequisite("node", "NodeJS", new Version(22, 3, 0));
     public static readonly Prerequisite AzureCli = new CommandLineToolPrerequisite("az", "Azure CLI", new Version(2, 63));
     public static readonly Prerequisite GithubCli = new CommandLineToolPrerequisite("gh", "GitHub CLI", new Version(2, 55));
+    public static readonly Prerequisite OpenApiMergeCli = new CommandLineToolPrerequisite("openapi-merge-cli", "OpenApi Merge CLI", new Version(1, 3, 2));
     public static readonly Prerequisite Aspire = new DotnetWorkloadPrerequisite("aspire", "Aspire", new Version(8, 2, 0));
 
     protected abstract bool IsValid();

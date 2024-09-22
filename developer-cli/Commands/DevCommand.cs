@@ -16,7 +16,7 @@ public class DevCommand : Command
 
     private void Execute()
     {
-        Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Docker, Prerequisite.Aspire, Prerequisite.Node);
+        Prerequisite.Ensure(Prerequisite.Dotnet, Prerequisite.Docker, Prerequisite.Aspire, Prerequisite.Node, Prerequisite.OpenApiMergeCli);
 
         var workingDirectory = Path.Combine(Configuration.GetSourceCodeFolder(), "..", "application", "AppHost");
 

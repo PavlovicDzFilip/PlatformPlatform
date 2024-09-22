@@ -1,4 +1,5 @@
 using Azure.Core;
+using NSwag.AspNetCore;
 using PlatformPlatform.AppGateway.Filters;
 using PlatformPlatform.AppGateway.Middleware;
 using PlatformPlatform.AppGateway.Transformations;
@@ -54,8 +55,12 @@ builder.WebHost.UseKestrel(option => option.AddServerHeader = false);
 
 var app = builder.Build();
 
-app.MapReverseProxy();
+app.UseSwaggerUi(swagger => swagger.SwaggerRoutes.Add(new SwaggerUiRoute("OpenApi", "/OpenApi.json")));
+app.UseStaticFiles();
 
+app.UseRouting();
+
+app.MapReverseProxy();
 app.UseMiddleware<AuthenticationCookieMiddleware>();
 
 await app.RunAsync();

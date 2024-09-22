@@ -17,4 +17,8 @@
         <ProjectReference Include="..\shared-kernel\SharedKernel\SharedKernel.csproj" />
     </ItemGroup>
 
+    <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+      <Exec Command="openapi-merge-cli --config openapi-merge.config.json" />
+    </Target>
+
 </Project>
