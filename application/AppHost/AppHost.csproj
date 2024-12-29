@@ -19,6 +19,9 @@
         <ProjectReference Include="..\back-office\Api\BackOffice.Api.csproj" />
         <ProjectReference Include="..\back-office\WebApp\BackOffice.WebApp.esproj" />
         <ProjectReference Include="..\back-office\Workers\BackOffice.Workers.csproj" />
+        <ProjectReference Include="..\vault\Api\Vault.Api.csproj" />
+        <ProjectReference Include="..\vault\Workers\Vault.Workers.csproj" />
+        <ProjectReference Include="..\vault\WebApp\Vault.WebApp.esproj" />
     </ItemGroup>
 
     <ItemGroup>

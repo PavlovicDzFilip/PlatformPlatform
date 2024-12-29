@@ -78,11 +78,27 @@ var backOfficeApi = builder
     .WithReference(azureStorage)
     .WaitFor(backOfficeWorkers);
 
+var vaultDatabase = sqlServer
+    .AddDatabase("vault-database", "vault");
+
+var vaultWorkers = builder
+    .AddProject<Vault_Workers>("vault-workers")
+    .WithReference(vaultDatabase)
+    .WithReference(azureStorage)
+    .WaitFor(vaultDatabase);
+
+var vaultApi = builder
+    .AddProject<Vault_Api>("vault-api")
+    .WithReference(vaultDatabase)
+    .WithReference(azureStorage)
+    .WaitFor(vaultWorkers);
+
 builder
     .AddProject<AppGateway>("app-gateway")
     .WithReference(frontendBuild)
     .WithReference(accountManagementApi)
     .WithReference(backOfficeApi)
+    .WithReference(vaultApi)
     .WaitFor(accountManagementApi)
     .WaitFor(frontendBuild);
 

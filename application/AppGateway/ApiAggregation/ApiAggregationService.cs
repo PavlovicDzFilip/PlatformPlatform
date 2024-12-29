@@ -45,6 +45,9 @@ public class ApiAggregationService(
                 case "back-office-api":
                     openApiDocument = await FetchOpenApiDocument(cluster, "BACK_OFFICE_API_URL");
                     break;
+                case "vault-api":
+                    openApiDocument = await FetchOpenApiDocument(cluster, "VAULT_API_URL");
+                    break;
                 // Add all clusters that should be part of the public aggregated contract here
                 default:
                     continue;

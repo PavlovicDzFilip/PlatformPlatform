@@ -1,0 +1,16 @@
+{
+  "solution": {
+    "path": "..\\PlatformPlatform.sln",
+    "projects": [
+      "AppHost\\AppHost.csproj",
+      "AppGateway\\AppGateway.csproj",
+      "shared-kernel\\SharedKernel\\SharedKernel.csproj",
+      "shared-kernel\\Tests\\SharedKernel.Tests.csproj",
+      "vault\\Core\\Vault.csproj",
+      "vault\\Workers\\Vault.Workers.csproj",
+      "vault\\Api\\Vault.Api.csproj",
+      "vault\\WebApp\\Vault.WebApp.esproj",
+      "vault\\Tests\\Vault.Tests.csproj"
+    ]
+  }
+}
