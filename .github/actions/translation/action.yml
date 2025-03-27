@@ -1,0 +1,57 @@
+name: Add translations
+description: Adds missing translations, and stops the execution if there are any updates
+inputs:
+  openai-key:
+    description: "OpenAi key"
+    required: true
+  self-contained-system:
+    description: "The system to translate"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.head_ref }}
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 9.0.x
+
+    - name: Restore .NET Dependencies
+      working-directory: developer-cli
+      run: dotnet restore
+      shell: bash
+
+    - name: Generate and Set User Secret for Token Signing Key
+      working-directory: developer-cli
+      run: |
+        # Extract UserSecretsId from the .csproj file
+        USER_SECRETS_ID=$(grep -oP '(?<=<UserSecretsId>).*?(?=</UserSecretsId>)' DeveloperCli.csproj)
+        
+        dotnet user-secrets set "OpenAIApiKey" "${{ inputs.openai-key }}" --id $USER_SECRETS_ID
+      shell: bash
+
+    - name: Run translate command
+      working-directory: developer-cli
+      run: |
+        dotnet run --no-restore -- translate -s "${{ inputs.self-contained-system }}"
+      shell: bash
+
+    - name: Check for changes
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+
+        if [[ `git status --porcelain` ]]; then
+          git add .
+          git commit -m "Add translations"
+          git push
+          echo "Missing translations are added. Stopping execution."
+          exit 1
+        else
+          echo "No missing translations are detected. Continuing execution."
+        fi
+      shell: bash

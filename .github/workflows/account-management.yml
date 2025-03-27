@@ -33,6 +33,23 @@ permissions:
   pull-requests: write
 
 jobs:
+  add-translations:
+    name: Add missing translations
+    runs-on: ubuntu-24.04
+    if: ${{ github.event_name == 'pull_request' || (github.event_name == 'push' && github.event.ref != 'refs/heads/main') }}
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Add Translations
+        uses: ./.github/actions/translation
+        with:
+          openai-key: ${{ secrets.OPENAI_KEY }}
+          self-contained-system: account-management
+
   build-and-test:
     name: Build and Test
     runs-on: ubuntu-24.04
