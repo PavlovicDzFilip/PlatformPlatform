@@ -7,6 +7,9 @@ inputs:
   self-contained-system:
     description: "The system to translate"
     required: true
+  github-pat:
+    description: "PAT token to publish commits with"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -50,10 +53,12 @@ runs:
 
           git add .
           git commit -m "Add translations"
-          git push
+          git push https://x-access-token:$PAT@github.com/${{ github.repository }} HEAD:${{ github.head_ref }}
           echo "Missing translations are added. Stopping execution."
           exit 1
         else
           echo "No missing translations are detected. Continuing execution."
         fi
       shell: bash
+      env:
+        PAT: ${{ inputs.github-pat }}
