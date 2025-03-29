@@ -46,6 +46,8 @@ runs:
         git config --global user.email "action@github.com"
 
         if [[ `git status --porcelain` ]]; then
+          sleep 300
+
           git add .
           git commit -m "Add translations"
           git push
