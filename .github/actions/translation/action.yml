@@ -65,7 +65,7 @@ runs:
         git config --global user.email "action@github.com"
 
         if [[ `git status --porcelain` ]]; then
-                    # Commit the current changes
+          # Commit the current changes
           git add .
           git commit -m "Add translations"
           git push
@@ -74,7 +74,7 @@ runs:
           echo "Retriggering the workflow..."
           echo "Debug: GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
           gh workflow run "$GITHUB_WORKFLOW" --ref "${{ github.head_ref }}"
-
+          sleep 5
           # Cancel the current workflow run
           echo "Canceling the current workflow run..."
           echo "Debug: GITHUB_RUN_ID=$GITHUB_RUN_ID"
