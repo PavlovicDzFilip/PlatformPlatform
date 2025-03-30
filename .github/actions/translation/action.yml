@@ -15,7 +15,7 @@ runs:
   steps:
     - name: Ensure action is running on a pull request
       run: |
-        if [[ -z "${{ github.head_ref }}" ]]; then
+                if [[ -z "${{ github.head_ref }}" ]]; then
           echo "This action is designed to run only on pull requests. Exiting."
           exit 1
         fi
@@ -41,33 +41,43 @@ runs:
       run: |
         # Extract UserSecretsId from the .csproj file
         USER_SECRETS_ID=$(grep -oP '(?<=<UserSecretsId>).*?(?=</UserSecretsId>)' DeveloperCli.csproj)
-        
+                
         dotnet user-secrets set "OpenAIApiKey" "${{ inputs.openai-key }}" --id $USER_SECRETS_ID
       shell: bash
 
     - name: Run translate command
       working-directory: developer-cli
       run: |
-        dotnet run --no-restore -- translate -s "${{ inputs.self-contained-system }}"
+                dotnet run --no-restore -- translate -s "${{ inputs.self-contained-system }}"
       shell: bash
 
     - name: Publish translations
       run: |
+        echo "Debug: github.head_ref=${{ github.head_ref }}"
+        echo "Debug: github.ref_name=${{ github.ref_name }}"
+        echo "Debug: github.event_name=${{ github.event_name }}"
+        echo "Debug: github.run_id=${{ github.run_id }}"
+        echo "Debug: github.run_number=${{ github.run_number }}"
+        echo "Debug: github.repository=${{ github.repository }}"
+        echo "Debug: github.actor=${{ github.actor }}"
+
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
 
         if [[ `git status --porcelain` ]]; then
-          # Commit the current changes
+                    # Commit the current changes
           git add .
           git commit -m "Add translations"
           git push
 
           # Retrigger the same workflow using gh CLI
           echo "Retriggering the workflow..."
+          echo "Debug: GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
           gh workflow run "$GITHUB_WORKFLOW" --ref "${{ github.head_ref }}"
 
           # Cancel the current workflow run
           echo "Canceling the current workflow run..."
+          echo "Debug: GITHUB_RUN_ID=$GITHUB_RUN_ID"
           gh run cancel $GITHUB_RUN_ID
 
           echo "Missing translations are added. Rerunning execution."
