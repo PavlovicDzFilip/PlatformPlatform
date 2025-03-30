@@ -71,7 +71,7 @@ runs:
           git commit -m "Add translations"
           git push
 
-          WORKFLOW_FILE=$(basename "$GITHUB_WORKFLOW_REF" | cut -d '@' -f1)
+          WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
           echo "The workflow file is: $WORKFLOW_FILE"
 
           gh workflow run "$WORKFLOW_FILE" --ref "${{ github.head_ref }}"
