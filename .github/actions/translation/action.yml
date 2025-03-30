@@ -71,10 +71,10 @@ runs:
         echo "Commit SHA: $COMMIT_SHA"
         echo "Branch Name: $BRANCH_NAME"
 
-        # Trigger a workflow_dispatch event on the specific branch
-        gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
-          -X POST \
-          -F ref="$BRANCH_NAME"
+        # # Trigger a workflow_dispatch event on the specific branch
+        # gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
+        #   -X POST \
+        #   -F ref="$BRANCH_NAME"
 
         echo "Missing translations are added. A new workflow has been triggered."
         exit 1
