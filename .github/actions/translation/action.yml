@@ -73,8 +73,7 @@ runs:
           # Retrigger the same workflow using gh CLI
           echo "Retriggering the workflow..."
           echo "Debug: GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
-          gh workflow run "$GITHUB_WORKFLOW" --ref "${{ github.head_ref }}"
-          sleep 30
+          gh workflow run "$GITHUB_WORKFLOW" --ref "${{ github.ref_name }}" # Updated to use github.ref_name
           # Cancel the current workflow run
           echo "Canceling the current workflow run..."
           echo "Debug: GITHUB_RUN_ID=$GITHUB_RUN_ID"
