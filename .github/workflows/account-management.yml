@@ -53,6 +53,7 @@ jobs:
 
   build-and-test:
     name: Build and Test
+    needs: ['add-translations']
     runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.generate_version.outputs.version }}
