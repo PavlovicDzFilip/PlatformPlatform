@@ -63,7 +63,7 @@ runs:
         git commit -m "Add translations"
         
         git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
-        git push origin ${{ github.head_ref }}
+        git push -o ci.skip=false origin ${{ github.head_ref }}
 
         # WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
         # echo "The workflow file is: $WORKFLOW_FILE"
