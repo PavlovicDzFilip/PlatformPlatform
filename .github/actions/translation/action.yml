@@ -14,7 +14,6 @@ inputs:
 permissions:
   contents: write
   actions: write
-  workflows: write
 
 runs:
   using: "composite"
