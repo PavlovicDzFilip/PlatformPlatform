@@ -65,10 +65,10 @@ runs:
         git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
         git push origin ${{ github.head_ref }}
 
-        WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
-        echo "The workflow file is: $WORKFLOW_FILE"
+        # WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
+        # echo "The workflow file is: $WORKFLOW_FILE"
 
-        gh workflow run $WORKFLOW_FILE --ref ${{ github.head_ref }}
+        # gh workflow run $WORKFLOW_FILE --ref ${{ github.head_ref }}
 
         echo "Missing translations are added. A new workflow will be triggered."
         exit 1
