@@ -48,7 +48,7 @@ jobs:
         with:
           openai-key: ${{ secrets.OPENAI_KEY }}
           self-contained-system: account-management
-          github-pat: ${{ secrets.TRANSLATIONS_PAT }}
+          github-pat: ${{ secrets.TRANSLATIONS_PAT_NEW }}
 
   build-and-test:
     name: Build and Test
