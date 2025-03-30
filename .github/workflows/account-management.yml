@@ -15,10 +15,6 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
     paths:
       - "application/*"
       - "application/shared-kernel/**"
@@ -30,6 +26,8 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   workflow_dispatch:
+  repository_dispatch:
+    types: [translation-update]
 
 permissions:
   id-token: write
