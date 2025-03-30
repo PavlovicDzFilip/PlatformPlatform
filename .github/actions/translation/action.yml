@@ -54,7 +54,7 @@ runs:
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
 
-        echo "https://${PAT}@github.com" > ~/.git-credentials
+        echo "https://${{ inputs.github-pat }}@github.com" > ~/.git-credentials
         git config --global credential.helper store
 
         git add .
@@ -70,4 +70,4 @@ runs:
         exit 1
       shell: bash
       env:
-        GH_TOKEN: ${{ inputs.github-pat }}
+        PAT: ${{ inputs.github-pat }}
