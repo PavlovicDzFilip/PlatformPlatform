@@ -38,6 +38,8 @@ jobs:
     runs-on: ubuntu-24.04
     permissions:
       contents: write
+      contents: write
+      workflows: write
 
     steps:
       - name: Checkout Code

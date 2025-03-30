@@ -10,6 +10,12 @@ inputs:
   github-pat:
     description: "Github workflow token"
     required: true
+
+permissions:
+  contents: write
+  actions: write
+  workflows: write
+
 runs:
   using: "composite"
   steps:
