@@ -7,7 +7,7 @@ inputs:
   self-contained-system:
     description: "The system to translate"
     required: true
-  github-token:
+  github-pat:
     description: "Github workflow token"
     required: true
 runs:
@@ -41,38 +41,33 @@ runs:
     - name: Run translate command
       working-directory: developer-cli
       run: |
-                dotnet run --no-restore -- translate -s "${{ inputs.self-contained-system }}"
+        dotnet run --no-restore -- translate -s "${{ inputs.self-contained-system }}"
       shell: bash
 
-    - name: Publish translations
+    - name: Check and publish translations
       run: |
-        echo "Debug: github.head_ref=${{ github.head_ref }}"
-        echo "Debug: github.ref_name=${{ github.ref_name }}"
-        echo "Debug: github.event_name=${{ github.event_name }}"
-        echo "Debug: github.run_id=${{ github.run_id }}"
-        echo "Debug: github.run_number=${{ github.run_number }}"
-        echo "Debug: github.repository=${{ github.repository }}"
-        echo "Debug: github.actor=${{ github.actor }}"
+        if [[ ! `git status --porcelain` ]]; then
+          echo "No missing translations are detected. Continuing execution."
+          exit 0
+        fi
 
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
 
-        if [[ `git status --porcelain` ]]; then
-          # Commit the current changes
-          git add .
-          git commit -m "Add translations"
-          git push
+        echo "https://${PAT}@github.com" > ~/.git-credentials
+        git config --global credential.helper store
 
-          WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
-          echo "The workflow file is: $WORKFLOW_FILE"
+        git add .
+        git commit -m "Add translations"
+        git push
 
-          gh workflow run "$WORKFLOW_FILE" --ref "${{ github.head_ref }}"
+        WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
+        echo "The workflow file is: $WORKFLOW_FILE"
 
-          echo "Missing translations are added. A new workflow will be triggered via the tag."
-          exit 1
-        else
-          echo "No missing translations are detected. Continuing execution."
-        fi
+        gh workflow run "$WORKFLOW_FILE" --ref "${{ github.head_ref }}"
+
+        echo "Missing translations are added. A new workflow will be triggered."
+        exit 1
       shell: bash
       env:
-        GH_TOKEN: ${{ inputs.github-token }}
+        GH_TOKEN: ${{ inputs.github-pat }}
