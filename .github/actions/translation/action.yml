@@ -54,12 +54,11 @@ runs:
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
 
-        echo "https://${{ inputs.github-pat }}@github.com" > ~/.git-credentials
-        git config --global credential.helper store
-
         git add .
         git commit -m "Add translations"
-        git push
+        
+        git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
+        git push origin ${{ github.ref_name }}
 
         WORKFLOW_FILE="${{ inputs.self-contained-system }}.yml"
         echo "The workflow file is: $WORKFLOW_FILE"
