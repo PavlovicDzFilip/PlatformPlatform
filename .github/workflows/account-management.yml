@@ -3,7 +3,7 @@ name: Account Management
 on:
   push:
     branches:
-      - main
+      - '**'
     paths:
       - "application/*"
       - "application/shared-kernel/**"
