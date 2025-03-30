@@ -71,10 +71,10 @@ runs:
           git commit -m "Add translations"
           git push
 
-          # Create a lightweight tag to trigger the next workflow
-          TAG_NAME="translation-update-${{ github.run_id }}"
-          git tag $TAG_NAME
-          git push origin $TAG_NAME
+          WORKFLOW_FILE=$(basename "$GITHUB_WORKFLOW_REF" | cut -d '@' -f1)
+          echo "The workflow file is: $WORKFLOW_FILE"
+
+          gh workflow run "$WORKFLOW_FILE" --ref "${{ github.head_ref }}"
 
           echo "Missing translations are added. A new workflow will be triggered via the tag."
           exit 1
