@@ -26,6 +26,8 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   workflow_dispatch:
+  repository_dispatch:
+    types: [translation-update]
 
 permissions:
   id-token: write
