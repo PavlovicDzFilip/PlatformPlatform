@@ -65,10 +65,16 @@ runs:
         git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
         git push origin ${{ github.head_ref }}
 
-        # Create repository_dispatch event using GitHub CLI
-        gh api repos/${{ github.repository }}/dispatches \
+        # Get the commit SHA after pushing
+        COMMIT_SHA=$(git rev-parse HEAD)
+        BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+        echo "Commit SHA: $COMMIT_SHA"
+        echo "Branch Name: $BRANCH_NAME"
+
+        # Trigger a workflow_dispatch event on the specific branch
+        gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
           -X POST \
-          -F event_type=translation-update
+          -F ref="$BRANCH_NAME"
 
         echo "Missing translations are added. A new workflow has been triggered."
         exit 1
