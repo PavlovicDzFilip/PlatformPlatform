@@ -24,6 +24,7 @@ runs:
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
+        fetch-depth: 0 # Fetch all branches to ensure the ref is available
         ref: ${{ github.head_ref }}
 
     - name: Setup .NET Core SDK
@@ -70,16 +71,12 @@ runs:
           git commit -m "Add translations"
           git push
 
-          # Retrigger the same workflow using gh CLI
-          echo "Retriggering the workflow..."
-          echo "Debug: GITHUB_WORKFLOW=$GITHUB_WORKFLOW"
-          gh workflow run "$GITHUB_WORKFLOW" --ref "${{ github.ref_name }}" # Updated to use github.ref_name
-          # Cancel the current workflow run
-          echo "Canceling the current workflow run..."
-          echo "Debug: GITHUB_RUN_ID=$GITHUB_RUN_ID"
-          gh run cancel $GITHUB_RUN_ID
+          # Create a lightweight tag to trigger the next workflow
+          TAG_NAME="translation-update-${{ github.run_id }}"
+          git tag $TAG_NAME
+          git push origin $TAG_NAME
 
-          echo "Missing translations are added. Rerunning execution."
+          echo "Missing translations are added. A new workflow will be triggered via the tag."
           exit 1
         else
           echo "No missing translations are detected. Continuing execution."
