@@ -15,6 +15,10 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
     paths:
       - "application/*"
       - "application/shared-kernel/**"
