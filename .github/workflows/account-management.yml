@@ -15,10 +15,6 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   pull_request:
-    types:
-      - opened       # Triggers only when the PR is created
-      - reopened     # Triggers when a previously closed PR is reopened
-      - synchronize  # Triggers when commits are pushed to the PR branch
     paths:
       - "application/*"
       - "application/shared-kernel/**"
@@ -53,6 +49,7 @@ jobs:
         with:
           openai-key: ${{ secrets.OPENAI_KEY }}
           self-contained-system: account-management
+          workflow-name: account-management.yml
           github-pat: ${{ secrets.TRANSLATIONS_PAT }}
 
   build-and-test:

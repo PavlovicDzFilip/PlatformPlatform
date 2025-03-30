@@ -49,12 +49,20 @@ runs:
         git config --global user.email "action@github.com"
 
         if [[ `git status --porcelain` ]]; then
-          sleep 300
-
+          # Commit the current changes
           git add .
           git commit -m "Add translations"
-          git push https://x-access-token:$PAT@github.com/${{ github.repository }} HEAD:${{ github.head_ref }}
-          echo "Missing translations are added. Stopping execution."
+          git push
+
+          # Retrigger the same workflow using gh CLI
+          echo "Retriggering the workflow..."
+          gh workflow run "$GITHUB_WORKFLOW" --ref "${{ github.ref }}"
+
+          # Cancel the current workflow run
+          echo "Canceling the current workflow run..."
+          gh run cancel $GITHUB_RUN_ID
+
+          echo "Missing translations are added. Rerunning execution."
           exit 1
         else
           echo "No missing translations are detected. Continuing execution."
