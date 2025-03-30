@@ -377,4 +377,4 @@ msgid "You are about to permanently delete the account and the entire data envir
 msgstr "You are about to permanently delete the account and the entire data environment via PlatformPlatform.<0/><1/>This action is permanent and irreversible."
 
 msgid "yourname@example.com"
-msgstr "yourname@example.com"
+msgstr ""

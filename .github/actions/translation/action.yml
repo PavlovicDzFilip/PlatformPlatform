@@ -70,3 +70,4 @@ runs:
       shell: bash
       env:
         PAT: ${{ inputs.github-pat }}
+        GH_TOKEN: ${{ inputs.github-pat }}

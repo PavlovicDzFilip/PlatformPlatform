@@ -49,7 +49,6 @@ jobs:
         with:
           openai-key: ${{ secrets.OPENAI_KEY }}
           self-contained-system: account-management
-          workflow-name: account-management.yml
           github-pat: ${{ secrets.TRANSLATIONS_PAT }}
 
   build-and-test:
