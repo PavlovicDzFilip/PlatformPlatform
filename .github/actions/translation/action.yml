@@ -13,13 +13,13 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Ensure action is running on a pull request
-      run: |
-        if [[ -z "${{ github.head_ref }}" ]]; then
-          echo "This action is designed to run only on pull requests. Exiting."
-          exit 1
-        fi
-      shell: bash
+    # - name: Ensure action is running on a pull request
+    #   run: |
+    #     if [[ -z "${{ github.head_ref }}" ]]; then
+    #       echo "This action is designed to run only on pull requests. Exiting."
+    #       exit 1
+    #     fi
+    #   shell: bash
 
     - name: Checkout Code
       uses: actions/checkout@v4
