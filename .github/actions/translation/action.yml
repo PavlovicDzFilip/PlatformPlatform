@@ -7,20 +7,12 @@ inputs:
   self-contained-system:
     description: "The system to translate"
     required: true
-  github-pat:
-    description: "PAT token to publish commits with"
+  github-token:
+    description: "Github workflow token"
     required: true
 runs:
   using: "composite"
   steps:
-    # - name: Ensure action is running on a pull request
-    #   run: |
-    #     if [[ -z "${{ github.head_ref }}" ]]; then
-    #       echo "This action is designed to run only on pull requests. Exiting."
-    #       exit 1
-    #     fi
-    #   shell: bash
-
     - name: Checkout Code
       uses: actions/checkout@v4
       with:
@@ -83,5 +75,4 @@ runs:
         fi
       shell: bash
       env:
-        PAT: ${{ inputs.github-pat }}
-        GH_TOKEN: ${{ inputs.github-pat }}
+        GH_TOKEN: ${{ inputs.github-token }}
