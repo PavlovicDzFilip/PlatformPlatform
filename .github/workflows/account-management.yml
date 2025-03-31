@@ -3,7 +3,7 @@ name: Account Management
 on:
   push:
     branches:
-      - 'main'
+      - '**'
     paths:
       - "application/*"
       - "application/shared-kernel/**"
@@ -26,21 +26,16 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   workflow_dispatch:
-  repository_dispatch:
-    types: [translation-update]
 
 permissions:
   id-token: write
-  contents: write
+  contents: read
   pull-requests: write
 
 jobs:
   add-translations:
     name: Add missing translations
     runs-on: ubuntu-24.04
-    permissions:
-      contents: write
-      actions: write
 
     steps:
       - name: Checkout Code
@@ -52,12 +47,6 @@ jobs:
           openai-key: ${{ secrets.OPENAI_KEY }}
           self-contained-system: account-management
           github-pat: ${{ secrets.TRANSLATIONS_PAT_NEW }}
-
-      - name: Stop Workflow if Translations Updated
-        if: ${{ failure() }}
-        run: |
-          echo "Translations updated. Stopping workflow and triggering a new one."
-          exit 1
 
   build-and-test:
     name: Build and Test

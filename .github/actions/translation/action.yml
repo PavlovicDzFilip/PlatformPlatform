@@ -65,20 +65,6 @@ runs:
         git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
         git push origin ${{ github.head_ref }}
 
-        # Trigger a new workflow run if translations are updated
-        if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          echo "Triggering a new workflow run linked to PR #$PR_NUMBER."
-          gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
-            -X POST \
-            -F ref="${{ github.head_ref }}" \
-            -F inputs='{"pr_number": "'"$PR_NUMBER"'"}'
-        else
-          echo "Triggering a new workflow run for branch ${{ github.head_ref }}."
-          gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
-            -X POST \
-            -F ref="${{ github.head_ref }}"
-        fi
 
         echo "Missing translations are added. Stopping current workflow."
         exit 1
