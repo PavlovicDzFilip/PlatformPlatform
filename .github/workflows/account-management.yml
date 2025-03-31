@@ -53,6 +53,12 @@ jobs:
           self-contained-system: account-management
           github-pat: ${{ secrets.TRANSLATIONS_PAT_NEW }}
 
+      - name: Stop Workflow if Translations Updated
+        if: ${{ failure() }}
+        run: |
+          echo "Translations updated. Stopping workflow and triggering a new one."
+          exit 1
+
   build-and-test:
     name: Build and Test
     needs: ['add-translations']
