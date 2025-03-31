@@ -3,7 +3,7 @@ name: Account Management
 on:
   push:
     branches:
-      - 'main'
+      - main
     paths:
       - "application/*"
       - "application/shared-kernel/**"
@@ -26,17 +26,33 @@ on:
       - ".github/workflows/_preview-migrations.yml"
       - "!**.md"
   workflow_dispatch:
-  repository_dispatch:
-    types: [translation-update]
 
 permissions:
   id-token: write
-  contents: write
+  contents: read
   pull-requests: write
 
 jobs:
+  add-translations:
+    name: Add missing translations
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Add Translations
+        uses: ./.github/actions/translation
+        with:
+          openai-key: ${{ secrets.OPENAI_KEY }}
+          self-contained-system: account-management
+          github-pat: ${{ secrets.TRANSLATIONS_PAT_NEW }}
+
   build-and-test:
     name: Build and Test
+    needs: ['add-translations']
     runs-on: ubuntu-24.04
     outputs:
       version: ${{ steps.generate_version.outputs.version }}
@@ -157,6 +173,7 @@ jobs:
 
   code-style-and-linting:
     name: Code Style and Linting
+    needs: ['add-translations']
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-24.04
 
