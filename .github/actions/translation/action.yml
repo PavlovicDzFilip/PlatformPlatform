@@ -56,8 +56,6 @@ runs:
           exit 0
         fi
 
-        git status
-
         git config --global user.name "GitHub Action"
         git config --global user.email "action@github.com"
 
@@ -67,6 +65,7 @@ runs:
         git remote set-url origin https://x-access-token:${PAT}@github.com/${{ github.repository }}.git
         git push origin ${{ github.head_ref }}
 
+        gh workflow run "${{ inputs.self-contained-system }}.yml"  --ref ${{ github.head_ref }}
         echo "Missing translations are added. Stopping current workflow."
         exit 1
       shell: bash
