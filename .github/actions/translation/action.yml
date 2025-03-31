@@ -72,7 +72,7 @@ runs:
           gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
             -X POST \
             -F ref="${{ github.head_ref }}" \
-            -F inputs="{\"pr_number\": \"$PR_NUMBER\"}"
+            -F inputs='{"pr_number": "'"$PR_NUMBER"'"}'
         else
           echo "Triggering a new workflow run for branch ${{ github.head_ref }}."
           gh api repos/${{ github.repository }}/actions/workflows/account-management.yml/dispatches \
